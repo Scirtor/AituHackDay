@@ -127,11 +127,14 @@
 
   .filters {
     display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    flex-wrap: wrap; /* Позволяет кнопкам переноситься на новую строку */
+    gap: 0.5rem; /* Уменьшает расстояние между кнопками */
+    justify-content: center; /* Центрирует кнопки */
   }
   
   .filters button {
+    flex: 1 1 calc(33.33% - 1rem); /* Кнопки занимают треть ширины контейнера */
+    max-width: 150px; /* Ограничивает максимальную ширину кнопок */
     padding: 0.5rem 1rem;
     background: var(--primary);
     color: var(--white);
@@ -139,11 +142,17 @@
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: background 0.3s;
+    text-align: center;
   }
   
+  .filters + .filters {
+    margin-top: 1rem; /* Добавляет отступ между двумя группами фильтров */
+  }
+
   .filters button:hover {
     background: #2c3acb;
   }
+  
   
   .popup {
     display: none;
@@ -185,4 +194,16 @@
     border: none;
     border-radius: var(--border-radius);
     cursor: pointer;
+  }
+
+  @media (max-width: 500px) {
+    .filters {
+      flex-direction: column; /* Кнопки располагаются вертикально */
+      align-items: center; /* Центрирует кнопки */
+    }
+  
+    .filters button {
+      flex: 1 1 100%; /* Кнопки занимают всю ширину */
+      max-width: none; /* Убирает ограничение ширины */
+    }
   }
