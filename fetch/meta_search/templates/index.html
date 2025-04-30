@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <title>MetaSearch</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>  
+<body>
+  <div class="container">
+    <h1>✒️ PenSearch</h1>
+    <form method="post">
+      <input type="text" name="query" placeholder="Введите запрос..." value="{{ query }}">
+      <input type="submit" value="Искать">
+    </form>
+    <div class="results">
+      {% for res in results %}
+      <div class="result">
+        <a href="{{ res.href }}" target="_blank">{{ res.title }}</a>
+        <small>{{ res.body }}</small>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

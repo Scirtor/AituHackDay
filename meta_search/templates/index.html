@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <title>MetaSearch</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>  
+<body>
+  <div class="container">
+    <h1>✒️ PenSearch</h1>
+    <form method="post">
+      <input type="text" name="query" placeholder="Введите запрос..." value="{{ query }}">
+      <input type="hidden" id="filter" name="filter" value="all">
+      <input type="submit" value="Искать">
+    </form>
+    <div class="filters">
+      <button type="button" onclick="togglePopup('site-popup')">Sites</button>
+      <button type="button" onclick="togglePopup('filetype-popup')">FileType</button>
+      <button type="button" onclick="setFilter('all')">Все</button>
+      <button type="button" onclick="setFilter('images')">Изображения</button>
+      <button type="button" onclick="setFilter('videos')">Видео</button>
+      
+    </div>
+    <div id="site-popup" class="popup">
+        <h3>Популярные сайты</h3>
+        <ul>
+          <li onclick="addToQuery('site:ru.wikipedia.org')">Wikipedia</li>
+          <li onclick="addToQuery('site:github.com')">GitHub</li>
+          <li onclick="addToQuery('site:stackoverflow.com')">StackOverflow</li>
+        </ul>
+        <button onclick="togglePopup('site-popup')">Закрыть</button>
+    </div>
+    <div id="filetype-popup" class="popup">
+        <h3>Типы файлов</h3>
+        <ul>
+          <li onclick="addToQuery('filetype:pdf')">PDF</li>
+          <li onclick="addToQuery('filetype:doc')">DOC</li>
+          <li onclick="addToQuery('filetype:ppt')">PPT</li>
+        </ul>
+        <button onclick="togglePopup('filetype-popup')">Закрыть</button>
+    </div>
+    <div class="results">
+        {% for res in results %}
+        <div class="result">
+          <div class="result-text">
+            <a href="{{ res.href }}" target="_blank">{{ res.title }}</a>
+            <small>{{ res.body }}</small>
+          </div>
+          {% if res.image %}
+          <div class="result-image">
+            <img src="{{ res.image }}" alt="Картинка">
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+  </div>
+</body>
+<script>
+  function togglePopup(popupId) {
+    const popups = document.querySelectorAll('.popup');
+    popups.forEach(popup => {
+      if (popup.id !== popupId) {
+        popup.style.display = 'none';
+      }
+    });
+
+    const popup = document.getElementById(popupId);
+    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function addToQuery(filter) {
+    const queryInput = document.querySelector('input[name="query"]');
+    queryInput.value += ` ${filter}`;
+  }
+</script>
+<script>
+    function setFilter(filter) {
+      const filterInput = document.getElementById('filter');
+      filterInput.value = filter; // Установить значение фильтра
+      document.querySelector('form').submit(); // Отправить форму
+    }
+  </script>
+</html>
